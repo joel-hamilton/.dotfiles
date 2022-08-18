@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>customSites</key>
+	<dict>
+		<key>9D44BCBF-29A3-4933-9DBF-BC1508C5C23A</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>confluence</string>
+			<key>text</key>
+			<string>Search Okta Confluence</string>
+			<key>url</key>
+			<string>https://oktawiki.atlassian.net/wiki/search?text={query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+		<key>E4356ED4-A36F-4B1B-8452-9487F2CD20D6</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>oktawiki</string>
+			<key>text</key>
+			<string>Search Okta Wiki</string>
+			<key>url</key>
+			<string>https://oktawiki.atlassian.net/wiki/search?text={query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
