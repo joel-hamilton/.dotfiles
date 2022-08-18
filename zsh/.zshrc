@@ -1,5 +1,13 @@
 export ZSH="$HOME/.dotfiles/zsh/.oh-my-zsh"
+export PATH="$PATH:$HOME/.dotfiles/_bin"
 
+# aliases for custom scripts - some unnecessary aliases are here, just to keep a handy list of all custom scripts
+alias scratch="$HOME/.dotfiles/_bin/open-scratch-file.sh"
+alias notes-zip="$HOME/.dotfiles/_bin/notes-zip.sh"
+alias notes-cron="$HOME/.dotfiles/_bin/notes-cron/run.sh"
+alias watch="$HOME/.dotfiles/_bin/watch.sh"
+
+# aliases for common commands
 alias pip=pip3
 alias ssh_webserver="ssh joel@134.122.47.46"
 alias ssh_pi="ssh pi@raspberrypi.local"

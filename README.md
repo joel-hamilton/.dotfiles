@@ -1,6 +1,10 @@
 # .dotfiles
 
-## Setup
+## Dependencies
+Various scripts rely on:
+- $NOTES_PATH baing set
+- ts-node being installed globally
+- `npm install` on `_bin/ts-notes-cron`
 ### iTerm2
 Go to General -> Preferences
 - check 'Load preferences from a custom folder or URL'
