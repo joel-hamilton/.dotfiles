@@ -12,4 +12,4 @@ if [[ ! -d "$NOTES_PATH" ]]; then
     exit 1
 fi
 
-ts-node "$HOME/.dotfiles/_bin/notes-cron/index.ts" "$NOTES_PATH"
+ts-node "$HOME/.dotfiles/bin/notes-cron/index.ts" "$NOTES_PATH"

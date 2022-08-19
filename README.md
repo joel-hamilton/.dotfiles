@@ -1,4 +1,5 @@
 # .dotfiles
+Home for dotfiles and scripts that I want available across multiple machines.
 
 ## Setup
 - Clone this repo into `$HOME/.dotfiles`
@@ -7,7 +8,7 @@
 Various scripts rely on:
 - $NOTES_PATH baing set
 - ts-node being installed globally
-- `npm install` on `_bin/ts-notes-cron`
+- `npm install` on `bin/ts-notes-cron`
 
 ### Alfred
 Go to Advanced -> Set Preferences Folder. This will bring up a file select window. Press `cmd + shift + .` to show hidden files, and select `$HOME/.dotfiles/Alfred`
@@ -37,3 +38,5 @@ EOF`
 
 `.oh-my-zsh` is a submodule in `.dotfiles/zsh`
 all plugins in `.dotfiles/zsh/.zsh_plugins` are added as submodules
+
+{{scripts|bash|nodejs}}
