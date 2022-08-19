@@ -17,13 +17,13 @@ Go to General -> Preferences
 - Save changes: Automatically
 
 ### vim
-
 Create symlinks:
-
 ```
 ln -s "$HOME/.dotfiles/vim/.vim" "$HOME/.vim"
 ln -s "$HOME/.dotfiles/vim/.vimrc" "$HOME/.vimrc"
 ```
+
+To install new plugins, run eg: `git submodule add git@github.com:vim-airline/vim-airline.git .vim/pack/vendor/start/airline`
 
 ### zsh
 
