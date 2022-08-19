@@ -1,0 +1,6 @@
+[submodule ".vim/pack/vendor/start/airline"]
+	path = .vim/pack/vendor/start/airline
+	url = git@github.com:vim-airline/vim-airline.git
+[submodule ".vim/pack/vendor/start/surround"]
+	path = .vim/pack/vendor/start/surround
+	url = git@github.com:tpope/vim-surround.git
