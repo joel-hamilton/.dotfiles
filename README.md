@@ -4,6 +4,20 @@ Home for dotfiles and scripts that I want available across multiple machines.
 ## Setup
 - Clone this repo into `$HOME/.dotfiles`
 - Do all the things below
+- run `git submodule update --init --recursive` to clone submodules [source](https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/) or `git submodule update --init --remote` to update to latest version
+
+## New machine setup
+```sh
+brew install ripgrep
+brew install fzf
+
+# To install useful key bindings and fuzzy completion:
+# This will prompt to install keybindings, fuzzy search and to update the .zshrc config, Y to all
+# .fzf can live in home directory
+$(brew --prefix)/opt/fzf/install
+
+```
+
 ## Dependencies
 Various scripts rely on:
 - $NOTES_PATH baing set

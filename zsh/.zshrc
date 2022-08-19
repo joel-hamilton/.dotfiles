@@ -16,7 +16,7 @@ alias rce="vim $HOME/.dotfiles/zsh/.zshrc"
 alias rcr=". $HOME/.dotfiles/zsh/.zshrc"
 
 ZSH_THEME="eastwood"
-plugins=(git)
+plugins=(git dirhistory)
 
 # src dir for autocomplete definitions
 fpath=("$HOME/.zsh_compdef" "$HOME/.dotfiles/zsh/.zsh_compdef" $fpath)
