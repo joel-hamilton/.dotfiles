@@ -2,27 +2,43 @@
 Home for dotfiles and scripts that I want available across multiple machines.
 
 ## Setup
-- Clone this repo into `$HOME/.dotfiles`
 - Do all the things below
 - run `git submodule update --init --recursive` to clone submodules [source](https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/) or `git submodule update --init --remote` to update to latest version
 
 ## New machine setup
-```sh
-brew install ripgrep
-brew install fzf
+- install VSCode, Alfred, iTerm2
+- set up Dropbox with notes folder, then set $NOTES_PATH
 
-# To install useful key bindings and fuzzy completion:
-# This will prompt to install keybindings, fuzzy search and to update the .zshrc config, Y to all
-# .fzf can live in home directory
+```sh
+# idempotent install of missing stuff with brew
+[ -z $(command -v git) ] && brew install git
+[ -z $(command -v node) ] && brew install node
+[ -z $(command -v jq) ] && brew install jq
+[ -z $(command -v rg) ] && brew install ripgrep
+[ -z $(command -v vim) ] && brew install vim
+[ -z $(command -v bat) ] && brew install bat
+
+# then install shell completions, fuzzy matching, but don't modify the .zshrc (it's already done)
 $(brew --prefix)/opt/fzf/install
 
-```
+# install node dependencies
+npm i -g ts-node ts-jest nodemon pino-pretty
 
-## Dependencies
-Various scripts rely on:
-- $NOTES_PATH baing set
-- ts-node being installed globally
-- `npm install` on `bin/ts-notes-cron`
+# clone this repo
+git clone git@github.com:joel-hamilton/.dotfiles.git "$HOME/.dotfiles"
+
+# link vim files
+ln -s "$HOME/.dotfiles/vim/.vim" "$HOME/.vim"
+ln -s "$HOME/.dotfiles/vim/.vimrc" "$HOME/.vimrc"
+
+# add this to ~/zshrc (prepending this is better than appending, but this is fine for now)
+cat << EOF >> "$HOME/.zshrc"
+if [ -r ~/.dotfiles/zsh/.zshrc ]; then
+  source ~/.dotfiles/zsh/.zshrc
+fi
+EOF
+
+```
 
 ### Alfred
 Go to Advanced -> Set Preferences Folder. This will bring up a file select window. Press `cmd + shift + .` to show hidden files, and select `$HOME/.dotfiles/Alfred`
@@ -53,4 +69,4 @@ EOF`
 `.oh-my-zsh` is a submodule in `.dotfiles/zsh`
 all plugins in `.dotfiles/zsh/.zsh_plugins` are added as submodules
 
-{{scripts|bash|nodejs}}
+{{scripts|bash|nodejs|typescript}}
