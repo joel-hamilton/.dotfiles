@@ -63,4 +63,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # fzf
 [ -s "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 export FZF_DEFAULT_OPTS="--multi --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-export FZF_DEFAULT_COMMAND="rg --files"
+[ "$OS" != 'raspbian' ] && export FZF_DEFAULT_COMMAND="rg --files"
