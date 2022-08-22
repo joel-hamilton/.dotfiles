@@ -26,7 +26,7 @@ describe("e2e tests", () => {
     await fs.rm(fp(), { recursive: true, force: true });
   });
 
-  test("", async () => {
+  test("test everything", async () => {
     await run(fp());
     const content1 = await fs.readFile(fp("1.md"), "utf8");
     expect(content1).toBe(

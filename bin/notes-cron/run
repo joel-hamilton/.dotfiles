@@ -3,13 +3,23 @@
 # This script runs the notes cron task on $NOTES_PATH
 
 if [[ -z "$NOTES_PATH" ]]; then
-    echo "NOTES_PATH is not set"
+    echo '$NOTES_PATH is not set, exiting'
     exit 1
 fi
 
 if [[ ! -d "$NOTES_PATH" ]]; then
-    echo "$NOTES_PATH does not exist"
+    echo "Notes directory '$NOTES_PATH' directory does not exist, exiting"
     exit 1
 fi
 
-ts-node "$HOME/.dotfiles/bin/notes-cron/index.ts" "$NOTES_PATH"
+if [[ -z "$EMAIL" ]]; then
+    echo 'Missing $EMAIL, exiting'
+    exit 1
+fi
+
+if [[ -z "$PHONE_NUMBER" ]]; then
+    echo 'Missing $PHONE_NUMBER, exiting'
+    exit 1
+fi
+
+ts-node "$HOME/.dotfiles/bin/notes-cron/index.ts" "$NOTES_PATH" "$EMAIL" "$PHONE_NUMBER"

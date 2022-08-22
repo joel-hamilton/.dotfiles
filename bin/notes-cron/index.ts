@@ -2,7 +2,7 @@ import path from "path";
 import { ITemplateFunction } from "./template-functions";
 import { File } from "./utils/File";
 import { String } from "./utils/String";
-import {age, ago, duration} from './template-functions'
+import { age, ago, duration, remind } from "./template-functions";
 
 export type TFnDef = [string, ITemplateFunction];
 
@@ -11,11 +11,15 @@ const defaultFnDefs: TFnDef[] = [
   ["age", age],
   ["ago", ago],
   ["duration", duration],
+  ["remind", remind],
   // TODO add others
   // then add remind(...)
 ];
 
-export const run = async (notesPath: string, fnDefs: TFnDef[] = defaultFnDefs) => {
+export const run = async (
+  notesPath: string,
+  fnDefs: TFnDef[] = defaultFnDefs
+) => {
   const files = await File.list(path.join(notesPath, "**/*.md"));
 
   for (const fileName of files) {
@@ -28,19 +32,29 @@ export const run = async (notesPath: string, fnDefs: TFnDef[] = defaultFnDefs) =
 
     // write the file, if content changed
     if (newContent !== content) {
-      console.log(`WRITING: ${newContent}`)
-      // await File.write(fileName, newContent);
+      console.log(`WRITING: ${newContent}`);
+      await File.write(fileName, newContent);
     }
   }
 };
 
-console.log('here!')
+// run from command line
 if (require.main === module) {
   const notesPath = process.argv[2];
-  console.log(notesPath)
-  if(!notesPath) {
+  const email = process.argv[3];
+  const phoneNumber = process.argv[4];
+  console.log({ notesPath, email, phoneNumber });
+  if (!notesPath) {
     throw new Error("No notes path");
   }
 
-  run(notesPath)
+  if (!email) {
+    throw new Error("No email");
+  }
+
+  if (!phoneNumber) {
+    throw new Error("No phone number");
+  }
+
+  run(notesPath);
 }

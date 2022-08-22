@@ -4,7 +4,7 @@ Portable setup scripts, dotfiles and executable scripts
 ## Linux (Rasberry Pi) Setup
 - Install raspberry pi on an SD card (using Rasberry Pi Imager is nice), add the host computer's ssh key
 - ssh into pi
-```
+```sh
 # add all github public keys to this machine
 curl https://github.com/joel-hamilton.keys | tee -a ~/.ssh/authorized_keys
 
