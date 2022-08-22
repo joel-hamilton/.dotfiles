@@ -1,6 +1,5 @@
 export ZSH="$HOME/.dotfiles/zsh/.oh-my-zsh"
 export PATH="$PATH:$HOME/.dotfiles/bin"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'" # use bat as man page pager
 
 if [ -s /etc/os-release ]; then
   export OS=$(cat /etc/os-release | grep -E "^ID=" | awk -F = '{print $2}')
@@ -27,6 +26,7 @@ alias hist="history | fzf +s --tac" # reversed, filter but don't sort by match
 
 # bat
 [ "$OS" = 'raspbian' ] && alias bat="/usr/bin/batcat"
+[ "$OS" != 'raspbian' ] && export MANPAGER="sh -c 'col -bx | bat -l man -p'" # use bat as man page pager
 log() { # use eg: `log log_to_tail.log`
     tail -f "$@" 2>&1 | bat --paging=never -l log
 }
@@ -63,4 +63,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # fzf
 [ -s "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 export FZF_DEFAULT_OPTS="--multi --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-export FZF_DEFAULT_COMMAND="rg --files"
+[ "$OS" != 'raspbian' ] && export FZF_DEFAULT_COMMAND="rg --files"
