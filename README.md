@@ -1,11 +1,67 @@
 # .dotfiles
-Home for dotfiles and scripts that I want available across multiple machines.
+Portable setup scripts, dotfiles and executable scripts
 
-## Setup
-- Do all the things below
-- run `git submodule update --init --recursive` to clone submodules [source](https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/) or `git submodule update --init --remote` to update to latest version
+## Linux (Rasberry Pi) Setup
+- Install raspberry pi on an SD card (using Rasberry Pi Imager is nice), add the host computer's ssh key
+- ssh into pi
+```
+# add all github public keys to this machine
+curl https://github.com/joel-hamilton.keys | tee -a ~/.ssh/authorized_keys
 
-## New machine setup
+# generate keys for raspberry pi
+ssh-keygen -t rsa
+
+# add public key to github
+cat ~/.ssh/id_rsa.pub
+
+# clone this repo and update submodules
+git clone git@github.com:joel-hamilton/.dotfiles.git "$HOME/.dotfiles"
+cd ~/.dotfiles && git submodule update --init --recursive
+
+# update apt
+sudo apt update
+
+# install zsh and oh-my-zsh
+[ -z $(command -v zsh) ] && sudo apt install -y zsh
+
+# set zsh as default shell
+chsh -s /bin/zsh
+
+[ -z $(command -v git) ] && sudo apt install -y git
+[ -z $(command -v fzf) ] && sudo apt install -y fzf
+[ -z $(command -v jq) ] && sudo apt install -y jq
+[ -z $(command -v vim) ] && sudo apt install -y vim
+
+if [ -z $(command -v bat) ]; then
+  sudo apt install -y bat
+  mkdir -p ~/.local/bin
+  ln -s /usr/bin/batcat ~/.local/bin/bat # this doesn't seem to work
+fi
+
+
+# install node/npm
+## get architecture by running
+uname -m
+
+## download node tarball for correct architecture (may have to look deep in 'previous releases' to find match)
+## check node unofficial builds for a newer compatible node version: https://unofficial-builds.nodejs.org/
+wget https://unofficial-builds.nodejs.org/download/release/v14.10.0/node-v14.10.0-linux-armv6l.tar.gz
+tar -xzf node-v14.10.0-linux-armv6l.tar.gz
+cd node-v14.10.0-linux-armv6l.tar
+sudo cp -R * /usr/local/
+
+## check and cleanup
+node -v
+npm -v
+cd .. && sudo rm -r node-v14.10.0*
+
+# set up vim
+ln -s "$HOME/.dotfiles/vim/.vim" "$HOME/.vim"
+ln -s "$HOME/.dotfiles/vim/.vimrc" "$HOME/.vimrc"
+
+```
+
+## Mac setup
 - install VSCode, Alfred, iTerm2
 - set up Dropbox with notes folder, then set $NOTES_PATH
 
@@ -39,6 +95,8 @@ fi
 EOF
 
 ```
+
+## Individual Programs
 
 ### Alfred
 Go to Advanced -> Set Preferences Folder. This will bring up a file select window. Press `cmd + shift + .` to show hidden files, and select `$HOME/.dotfiles/Alfred`
