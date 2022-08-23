@@ -2,7 +2,10 @@ import path from "path";
 import { ITemplateFunction } from "./template-functions";
 import { File } from "./utils/File";
 import { executeTemplateFunction, age, ago, duration, remind } from "./template-functions";
-import { IMiddleware } from "./middlewares";
+
+export interface IMiddleware {
+  (param?: string): string;
+}
 
 export type TFnDef = [
   functionName: string,

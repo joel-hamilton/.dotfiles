@@ -1,4 +1,4 @@
-import { IMiddleware } from "../middlewares";
+import { IMiddleware } from "../index";
 import { IDateTimeClient } from "../services/DateTime";
 
 export * from "./age";
@@ -6,8 +6,10 @@ export * from "./ago";
 export * from "./duration";
 export * from "./remind";
 
-export type TTemplateFunctionReturnValue =
-  [updatedValueString: string, returnValue?: string];
+export type TTemplateFunctionReturnValue = [
+  updatedValueString: string,
+  returnValue?: string
+];
 export interface ITemplateFunction {
   (param: string, ...args: any): TTemplateFunctionReturnValue; // TODO make this accept an IDateTimeClient of a TNotifyRecipient
 }
@@ -34,6 +36,12 @@ export const executeTemplateFunction = (
 
     try {
       [updatedValueString, returnValue] = fn(param);
+
+      // first middleware gets called with the template function's return value
+      // subsequent middlewares get previous middleware's value
+      for (const middleware of middlewares || []) {
+        returnValue = middleware(returnValue);
+      }
     } catch (e) {
       console.error(`Error: skipping ${fullTemplateString}`, e);
       continue;
