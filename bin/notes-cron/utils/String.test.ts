@@ -1,9 +1,15 @@
+import {
+  ITemplateFunction,
+  TTemplateFunctionReturnValue,
+} from "../template-functions";
 import { String } from "./String";
 
 describe("String", () => {
   describe("templateFunction", () => {
     const fnName = "doubleupper";
-    const testFn = (param: string) => (param + param).toUpperCase();
+    const testFn = (content: string) => {
+      return [(content + content).toUpperCase()] as TTemplateFunctionReturnValue;
+    };
     test("it returns the given string if no function exists in it", () => {
       const content =
         "Testing a string with no function calls. But something that looks(like ~ one).";

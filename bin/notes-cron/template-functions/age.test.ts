@@ -7,7 +7,7 @@ describe("age", () => {
       isValid: () => true,
       fromNow: () => "two years ago",
     });
-    expect(age("June 2022", stubDateTimeClient)).toBe("two years old");
+    expect(age("June 2022", stubDateTimeClient)[0]).toBe("two years old");
   });
 
 

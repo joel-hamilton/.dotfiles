@@ -5,8 +5,8 @@ import mockFs from "mock-fs";
 describe("index", () => {
   describe("run", () => {
     const fnDefs: TFnDef[] = [
-      ["allCaps", (content: string) => content.toUpperCase()],
-      ["double", (content: string) => content + content],
+      ["allCaps", (content: string) => [content.toUpperCase()]],
+      ["double", (content: string) => [content + content]],
     ];
     const fileTree = {
       notes: {

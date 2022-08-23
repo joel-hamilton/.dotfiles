@@ -22,20 +22,21 @@ export class String {
       // full template string from fnName to final paren
       const fullTemplateString = match[0];
 
-      // split param from previous fnReturnValue
+      // split param from previous updatedValueString
       const param = match[1].split("~")[0].trim();
       const index = match.index!;
-      let fnReturnValue;
+      let updatedValueString;
+      let returnValue;
 
       try {
-        fnReturnValue = fn(param);
+        [updatedValueString, returnValue] = fn(param);
       } catch (e) {
         console.error(`Error: skipping ${fullTemplateString}`, e);
         continue;
       }
 
       // create new function template string, eg: fn(param ~ value)
-      const newFnString = `${fnName}(${param} ~ ${fnReturnValue})`;
+      const newFnString = `${fnName}(${param} ~ ${updatedValueString})`;
 
       // replace the old function template string
       content =
