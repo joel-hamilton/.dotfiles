@@ -1,6 +1,6 @@
 import { ITemplateFunction } from ".";
-import { TNofifyRecipient, Notify, INotifyClient } from "../services/Notify";
+import { IDateTimeClient } from "../services/DateTime";
 
-export const remind:ITemplateFunction = (dateString: string, to: TNofifyRecipient, notifyClient: INotifyClient) => {
+export const remind:ITemplateFunction = (dateString: string, dateTimeClient?:IDateTimeClient) => {
   return ['test', 'test'];
 };

@@ -11,7 +11,7 @@ export type TTemplateFunctionReturnValue = [
   returnValue?: string
 ];
 export interface ITemplateFunction {
-  (param: string, ...args: any): TTemplateFunctionReturnValue; // TODO make this accept an IDateTimeClient of a TNotifyRecipient
+  (templateFunctionString: string, ...args: any): TTemplateFunctionReturnValue; // TODO make this accept an IDateTimeClient of a TNotifyRecipient
 }
 
 export const executeTemplateFunction = (
@@ -26,7 +26,7 @@ export const executeTemplateFunction = (
     const match = matches[i];
 
     // full template string from fnName to final paren
-    const fullTemplateString = match[0];
+    const templateFunctionString = match[0];
 
     // split param from previous updatedValueString
     const param = match[1].split("~")[0].trim();
@@ -43,7 +43,7 @@ export const executeTemplateFunction = (
         returnValue = middleware(returnValue);
       }
     } catch (e) {
-      console.error(`Error: skipping ${fullTemplateString}`, e);
+      console.error(`Error: skipping ${templateFunctionString}`, e);
       continue;
     }
 
@@ -54,7 +54,7 @@ export const executeTemplateFunction = (
     content =
       content.substring(0, index) +
       newFnString +
-      content.substring(index + fullTemplateString.length);
+      content.substring(index + templateFunctionString.length);
   }
 
   return content;

@@ -15,10 +15,10 @@ export type TFnDef = [
 
 // TODO require dynamically?
 const defaultFnDefs: TFnDef[] = [
-  ["age", age],
-  ["ago", ago],
-  ["duration", duration],
-  ["remind", remind],
+  ["age", age], // eg: age(July 2020 ~ two years old)
+  ["ago", ago], // eg: ago(July 2020 ~ two years ago)
+  ["duration", duration], // eg: duration(July 2020 ~ for two year)
+  ["remind", remind], // eg: remind(July 2023 ~ Message Felix re: new baby) -> reminded(July 2023 ~ Message Felix re: new baby)
   // TODO add others
   // then add remind(...)
 ];
