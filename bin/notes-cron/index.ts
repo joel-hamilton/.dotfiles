@@ -3,8 +3,13 @@ import { ITemplateFunction } from "./template-functions";
 import { File } from "./utils/File";
 import { String } from "./utils/String";
 import { age, ago, duration, remind } from "./template-functions";
+import { IMiddleware } from "./middlewares";
 
-export type TFnDef = [string, ITemplateFunction];
+export type TFnDef = [
+  functionName: string,
+  templateFunction: ITemplateFunction,
+  middlewares?: IMiddleware[]
+];
 
 // TODO require dynamically?
 const defaultFnDefs: TFnDef[] = [
@@ -26,13 +31,14 @@ export const run = async (
     const content = await File.read(fileName);
     let newContent = content;
 
-    for(const [fnName, templateFunction] of fnDefs) {
-      newContent = String.executeFunctionTemplate(newContent, fnName, templateFunction);
+    for (const [fnName, templateFunction, middlewares] of fnDefs) {
+      newContent = String.executeTemplateFunction(
+        newContent,
+        fnName,
+        templateFunction,
+        middlewares
+      );
     }
-
-    // const newContent = fnDefs.reduce((accContent: string, [fnName, fn]) => {
-    //   return String.executeFunctionTemplate(accContent, fnName, fn);
-    // }, content);
 
     // write the file, if content changed
     if (newContent !== content) {

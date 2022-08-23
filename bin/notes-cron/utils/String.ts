@@ -1,19 +1,21 @@
+import { IMiddleware } from "../middlewares";
 import { ITemplateFunction } from "../template-functions";
 
 export class String {
   /**
    * Finds and replaces all instances of function template `$fnName($param)`in a string with the $value of invoking $fn with $param. Output formatted like: $fnName($param ~ $value)
-   * @param string the text string containing function definitions
+   * @param string the text string containing file content
    * @param fnName the name of the function in the string
    * @param fn the actual function to invoke
    */
-  static executeFunctionTemplate(
-    string: string,
+  static executeTemplateFunction(
+    content: string,
     fnName: string,
-    fn: ITemplateFunction
+    fn: ITemplateFunction,
+    middlewares?: IMiddleware[]
   ): string {
     const regex = new RegExp(`${fnName}\\(([^\)]*)\\)`, "g");
-    const matches = [...string.matchAll(regex)];
+    const matches = [...content.matchAll(regex)];
     for (let i = matches.length - 1; i >= 0; i--) {
       const match = matches[i];
 
@@ -36,12 +38,12 @@ export class String {
       const newFnString = `${fnName}(${param} ~ ${fnReturnValue})`;
 
       // replace the old function template string
-      string =
-        string.substring(0, index) +
+      content =
+        content.substring(0, index) +
         newFnString +
-        string.substring(index + fullTemplateString.length);
+        content.substring(index + fullTemplateString.length);
     }
 
-    return string;
+    return content;
   }
 }
