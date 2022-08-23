@@ -24,11 +24,15 @@ export const run = async (
 
   for (const fileName of files) {
     const content = await File.read(fileName);
+    let newContent = content;
 
-    // todo chain the function calls
-    const newContent = fnDefs.reduce((accContent: string, [fnName, fn]) => {
-      return String.executeFunctionTemplate(accContent, fnName, fn);
-    }, content);
+    for(const [fnName, templateFunction] of fnDefs) {
+      newContent = String.executeFunctionTemplate(newContent, fnName, templateFunction);
+    }
+
+    // const newContent = fnDefs.reduce((accContent: string, [fnName, fn]) => {
+    //   return String.executeFunctionTemplate(accContent, fnName, fn);
+    // }, content);
 
     // write the file, if content changed
     if (newContent !== content) {
