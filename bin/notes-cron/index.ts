@@ -1,8 +1,7 @@
 import path from "path";
 import { ITemplateFunction } from "./template-functions";
 import { File } from "./utils/File";
-import { String } from "./utils/String";
-import { age, ago, duration, remind } from "./template-functions";
+import { executeTemplateFunction, age, ago, duration, remind } from "./template-functions";
 import { IMiddleware } from "./middlewares";
 
 export type TFnDef = [
@@ -32,7 +31,7 @@ export const run = async (
     let newContent = content;
 
     for (const [fnName, templateFunction, middlewares] of fnDefs) {
-      newContent = String.executeTemplateFunction(
+      newContent = executeTemplateFunction(
         newContent,
         fnName,
         templateFunction,
