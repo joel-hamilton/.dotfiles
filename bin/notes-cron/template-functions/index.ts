@@ -6,18 +6,21 @@ export * from "./ago";
 export * from "./duration";
 export * from "./remind";
 
-export type TTemplateFunctionReturnValue = [
-  updatedValueString: string,
-  returnValue?: string
-];
+export interface IContext {
+  fnName: string;
+  templateFunctionString: string;
+  param: string; // param before the ~
+  currentValue: string; // after the ~
+}
+
 export interface ITemplateFunction {
-  (templateFunctionString: string, ...args: any): TTemplateFunctionReturnValue; // TODO make this accept an IDateTimeClient of a TNotifyRecipient
+  (ctx: IContext, dateTimeClient?:IDateTimeClient): IContext;
 }
 
 export const executeTemplateFunction = (
   content: string,
   fnName: string,
-  fn: ITemplateFunction,
+  templateFunction: ITemplateFunction,
   middlewares?: IMiddleware[]
 ): string => {
   const regex = new RegExp(`${fnName}\\(([^\)]*)\\)`, "g");
@@ -29,18 +32,24 @@ export const executeTemplateFunction = (
     const templateFunctionString = match[0];
 
     // split param from previous updatedValueString
-    const param = match[1].split("~")[0].trim();
+    const [param, currentValue] = match[1].split("~");
     const index = match.index!;
     let updatedValueString;
     let returnValue;
 
-    try {
-      [updatedValueString, returnValue] = fn(param);
+    // TODO pass this context object into template function and to each middleware, allowing them to modify it
+    let ctx:IContext = {
+      fnName,
+      templateFunctionString,
+      param: param.trim(),
+      currentValue: (currentValue || "").trim(),
+    }
 
-      // first middleware gets called with the template function's return value
-      // subsequent middlewares get previous middleware's value
+    try {
+      ctx = templateFunction(ctx);
+
       for (const middleware of middlewares || []) {
-        returnValue = middleware(returnValue);
+        ctx = middleware(ctx);
       }
     } catch (e) {
       console.error(`Error: skipping ${templateFunctionString}`, e);
@@ -48,12 +57,12 @@ export const executeTemplateFunction = (
     }
 
     // create new function template string, eg: fn(param ~ value)
-    const newFnString = `${fnName}(${param} ~ ${updatedValueString})`;
+    const newTemplateFunctionString = `${ctx.fnName}(${ctx.param} ~ ${ctx.currentValue})`;
 
     // replace the old function template string
     content =
       content.substring(0, index) +
-      newFnString +
+      newTemplateFunctionString +
       content.substring(index + templateFunctionString.length);
   }
 

@@ -1,22 +1,32 @@
 import { IDateTimeClient } from "../services/DateTime";
-import { ago } from "../template-functions";
+import { ago, IContext } from "../template-functions";
 
 describe("ago", () => {
+  let ctx: IContext;
+  beforeEach(() => {
+    ctx = {
+      fnName: "ago",
+      templateFunctionString: "ago(June 2020)",
+      param: "June 2020",
+      currentValue: "",
+    };
+  });
+
   test("it returns the correct duration string with valid date", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (_: string) => ({
       isValid: () => true,
       fromNow: () => "two years ago",
     });
-    expect(ago("June 2022", stubDateTimeClient)[0]).toBe("two years ago");
+
+    expect(ago(ctx, stubDateTimeClient).currentValue).toBe("two years ago");
   });
 
-
   test("it returns the correct duration string with invalidvalid date", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (_: string) => ({
       isValid: () => false,
       fromNow: () => "two years ago",
     });
-    expect(() => ago("June 2022", stubDateTimeClient)).toThrow(
+    expect(() => ago(ctx, stubDateTimeClient)).toThrow(
       new Error("Invalid date")
     );
   });

@@ -1,17 +1,17 @@
 import {
   executeTemplateFunction,
+  IContext,
   ITemplateFunction,
-  TTemplateFunctionReturnValue,
 } from "../template-functions";
 
 describe("String", () => {
   describe("templateFunction", () => {
     const fnName = "doubleupper";
-    const testFn = (content: string) => {
-      return [
-        (content + content).toUpperCase(),
-        "returnValue",
-      ] as TTemplateFunctionReturnValue;
+    const testFn: ITemplateFunction = (ctx: IContext) => {
+      return {
+        ...ctx,
+        currentValue: (ctx.param + ctx.param).toUpperCase(),
+      };
     };
     test("it returns the given string if no function exists in it", () => {
       const content =
@@ -44,26 +44,38 @@ describe("String", () => {
     });
 
     test("it calls first middleware with template function return value", () => {
-      const middlewareSpy = jest.fn();
+      const middlewareSpy = jest.fn((ctx) => ctx);
       const content = "test content doubleupper(test)";
       executeTemplateFunction(content, fnName, testFn, [middlewareSpy]);
 
       expect(middlewareSpy).toHaveBeenCalledTimes(1);
-      expect(middlewareSpy).toHaveBeenCalledWith("returnValue");
+      expect(middlewareSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ currentValue: "TESTTEST" })
+      );
     });
 
     test("it calls subsequent middlewares with previous middleware return value", () => {
-      const middlewareSpy1 = jest.fn((param) => param.toUpperCase());
-      const middlewareSpy2 = jest.fn();
+      const middlewareSpy1 = jest.fn((ctx) => ({
+        ...ctx,
+        currentValue: ctx.currentValue.toLowerCase(),
+      }));
+      const middlewareSpy2 = jest.fn((ctx) => ctx);
       const content = "test content doubleupper(test)";
-      executeTemplateFunction(content, fnName, testFn, [middlewareSpy1, middlewareSpy2]);
+      executeTemplateFunction(content, fnName, testFn, [
+        middlewareSpy1,
+        middlewareSpy2,
+      ]);
 
+      // TODO expect only on the currentValue of ctx
       expect(middlewareSpy1).toHaveBeenCalledTimes(1);
-      expect(middlewareSpy1).toHaveBeenCalledWith("returnValue");
-
+      expect(middlewareSpy1).toHaveBeenCalledWith(
+        expect.objectContaining({ currentValue: "TESTTEST" })
+      );
 
       expect(middlewareSpy2).toHaveBeenCalledTimes(1);
-      expect(middlewareSpy2).toHaveBeenCalledWith("RETURNVALUE");
+      expect(middlewareSpy2).toHaveBeenCalledWith(
+        expect.objectContaining({ currentValue: "testtest" })
+      );
     });
   });
 });

@@ -1,7 +1,10 @@
-import { ITemplateFunction } from ".";
+import { IContext, ITemplateFunction } from ".";
 import { DateTime, IDateTimeClient } from "../services/DateTime";
 
-export const age: ITemplateFunction = (dateString: string, dateTimeClient?: IDateTimeClient) => {
+export const age: ITemplateFunction = (
+  ctx: IContext,
+  dateTimeClient?: IDateTimeClient
+) => {
   const dateTime = new DateTime(dateTimeClient);
-  return [dateTime.age(dateString)];
+  return { ...ctx, currentValue: dateTime.age(ctx.param) };
 };

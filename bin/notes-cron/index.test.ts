@@ -2,11 +2,25 @@ import { run, TFnDef } from "./index";
 import { File } from "./utils/File";
 
 import mockFs from "mock-fs";
+import { IContext } from "./template-functions";
 describe("index", () => {
   describe("run", () => {
     const fnDefs: TFnDef[] = [
-      ["allCaps", (content: string) => [content.toUpperCase()]],
-      ["double", (content: string) => [content + content]],
+      [
+        "allCaps",
+        (ctx: IContext) => {
+          return { ...ctx, currentValue: ctx.param.toUpperCase() };
+        },
+      ],
+      [
+        "double",
+        (ctx: IContext) => {
+          return {
+            ...ctx,
+            currentValue: ctx.param + ctx.param + "",
+          };
+        },
+      ],
     ];
     const fileTree = {
       notes: {

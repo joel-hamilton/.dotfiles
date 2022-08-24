@@ -1,10 +1,10 @@
 import path from "path";
-import { ITemplateFunction } from "./template-functions";
+import { IContext, ITemplateFunction } from "./template-functions";
 import { File } from "./utils/File";
 import { executeTemplateFunction, age, ago, duration, remind } from "./template-functions";
 
 export interface IMiddleware {
-  (param?: string): string;
+  (ctx:IContext): IContext;
 }
 
 export type TFnDef = [
@@ -18,7 +18,7 @@ const defaultFnDefs: TFnDef[] = [
   ["age", age], // eg: age(July 2020 ~ two years old)
   ["ago", ago], // eg: ago(July 2020 ~ two years ago)
   ["duration", duration], // eg: duration(July 2020 ~ for two year)
-  ["remind", remind], // eg: remind(July 2023 ~ Message Felix re: new baby) -> reminded(July 2023 ~ Message Felix re: new baby)
+  ["remind", remind], // eg: remind(July 2023 ~ Message Felix re: new baby) -> remind(July 2023 ~ DONE Message Felix re: new baby)
   // TODO add others
   // then add remind(...)
 ];
