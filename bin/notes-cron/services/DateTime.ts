@@ -31,4 +31,9 @@ export class DateTime {
     const agoString = this.ago(dateString);
     return "for " + agoString.replace("ago", "").trim();
   }
+
+  isPast(dateString: string) {
+    const agoString = this.ago(dateString);
+    return agoString.includes('ago'); // TODO fix this hackiness and add tests
+  }
 }

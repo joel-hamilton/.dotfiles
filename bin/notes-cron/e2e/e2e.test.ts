@@ -18,7 +18,7 @@ describe("e2e tests", () => {
 
     await fs.writeFile(
       fp("dir/2.md"),
-      `testing duration(${date}), duration(${date} ~ 2 months ago)\ntesting age(${date}), age(${date} ~ 2 months ago)`
+      `testing duration(${date}), duration(${date} ~ 2 months ago)\ntesting age(${date}), age(${date} ~ 2 months ago), remind(June 2020 ~ Test reminder)`
     );
   });
 
@@ -33,9 +33,9 @@ describe("e2e tests", () => {
       `testing ago(${date} ~ 3 years ago), ago(${date} ~ 3 years ago)`
     );
 
-    // const content2 = await fs.readFile(fp("dir/2.md"), "utf8");
-    // expect(content2).toBe(
-    //   `testing duration(${date} ~ for 3 years), duration(${date} ~ for 3 years)\ntesting age(${date} ~ 3 years old), age(${date} ~ 3 years old)`
-    // );
+    const content2 = await fs.readFile(fp("dir/2.md"), "utf8");
+    expect(content2).toBe(
+      `testing duration(${date} ~ for 3 years), duration(${date} ~ for 3 years)\ntesting age(${date} ~ 3 years old), age(${date} ~ 3 years old), reminded(June 2020 ~ Test reminder)`
+    );
   });
 });

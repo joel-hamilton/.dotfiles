@@ -10,7 +10,7 @@ export interface IMiddleware {
 export type TFnDef = [
   functionName: string,
   templateFunction: ITemplateFunction,
-  middlewares?: IMiddleware[]
+  ...middlewares: IMiddleware[]
 ];
 
 // TODO require dynamically?
@@ -18,7 +18,14 @@ const defaultFnDefs: TFnDef[] = [
   ["age", age], // eg: age(July 2020 ~ two years old)
   ["ago", ago], // eg: ago(July 2020 ~ two years ago)
   ["duration", duration], // eg: duration(July 2020 ~ for two year)
-  ["remind", remind], // eg: remind(July 2023 ~ Message Felix re: new baby) -> remind(July 2023 ~ DONE Message Felix re: new baby)
+  ["remind", remind, (ctx:IContext) => {
+    if(ctx.fnName === 'reminded') {
+      console.log("SENDING SMS!!!!")
+      console.log(ctx);
+    }
+
+    return ctx
+  }], // eg: remind(July 2023 ~ Message Felix re: new baby) -> reminded(July 2023 ~ Message Felix re: new baby)
   // TODO add others
   // then add remind(...)
 ];
@@ -33,12 +40,12 @@ export const run = async (
     const content = await File.read(fileName);
     let newContent = content;
 
-    for (const [fnName, templateFunction, middlewares] of fnDefs) {
+    for (const [fnName, templateFunction, ...middlewares] of fnDefs) {
       newContent = executeTemplateFunction(
         newContent,
         fnName,
         templateFunction,
-        middlewares
+        ...middlewares
       );
     }
 

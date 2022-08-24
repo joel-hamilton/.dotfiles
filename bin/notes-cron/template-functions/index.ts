@@ -21,7 +21,7 @@ export const executeTemplateFunction = (
   content: string,
   fnName: string,
   templateFunction: ITemplateFunction,
-  middlewares?: IMiddleware[]
+  ...middlewares: IMiddleware[]
 ): string => {
   const regex = new RegExp(`${fnName}\\(([^\)]*)\\)`, "g");
   const matches = [...content.matchAll(regex)];
@@ -48,7 +48,7 @@ export const executeTemplateFunction = (
     try {
       ctx = templateFunction(ctx);
 
-      for (const middleware of middlewares || []) {
+      for (const middleware of middlewares) {
         ctx = middleware(ctx);
       }
     } catch (e) {

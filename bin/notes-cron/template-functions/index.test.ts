@@ -46,7 +46,7 @@ describe("String", () => {
     test("it calls first middleware with template function return value", () => {
       const middlewareSpy = jest.fn((ctx) => ctx);
       const content = "test content doubleupper(test)";
-      executeTemplateFunction(content, fnName, testFn, [middlewareSpy]);
+      executeTemplateFunction(content, fnName, testFn, middlewareSpy);
 
       expect(middlewareSpy).toHaveBeenCalledTimes(1);
       expect(middlewareSpy).toHaveBeenCalledWith(
@@ -61,10 +61,10 @@ describe("String", () => {
       }));
       const middlewareSpy2 = jest.fn((ctx) => ctx);
       const content = "test content doubleupper(test)";
-      executeTemplateFunction(content, fnName, testFn, [
+      executeTemplateFunction(content, fnName, testFn,
         middlewareSpy1,
         middlewareSpy2,
-      ]);
+      );
 
       // TODO expect only on the currentValue of ctx
       expect(middlewareSpy1).toHaveBeenCalledTimes(1);

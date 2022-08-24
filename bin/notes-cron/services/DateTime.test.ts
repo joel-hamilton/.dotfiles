@@ -21,9 +21,18 @@ describe("DateTime", () => {
       expect(() => dateTime.age("invalid date")).toThrowError("Invalid date");
     });
 
-    test("for throws an error with an invalid date", () => {
+    test("duration throws an error with an invalid date", () => {
       const dateTime = new DateTime(stubDateTimeClient);
-      expect(() => dateTime.duration("invalid date")).toThrowError("Invalid date");
+      expect(() => dateTime.duration("invalid date")).toThrowError(
+        "Invalid date"
+      );
+    });
+
+    test("duration throws an error with an invalid date", () => {
+      const dateTime = new DateTime(stubDateTimeClient);
+      expect(() => dateTime.isPast("invalid date")).toThrowError(
+        "Invalid date"
+      );
     });
   });
 
