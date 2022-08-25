@@ -27,8 +27,6 @@ describe("duration", () => {
       isValid: () => false,
       fromNow: () => "two years ago",
     });
-    expect(() => duration(ctx, stubDateTimeClient)).toThrow(
-      new Error("Invalid date")
-    );
+    expect(() => duration(ctx, stubDateTimeClient)).toThrowError("Invalid date");
   });
 });

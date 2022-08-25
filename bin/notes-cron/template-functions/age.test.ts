@@ -26,8 +26,6 @@ describe("age", () => {
       isValid: () => false,
       fromNow: () => "two years ago",
     });
-    expect(() => age(ctx, stubDateTimeClient)).toThrow(
-      new Error("Invalid date")
-    );
+    expect(() => age(ctx, stubDateTimeClient)).toThrowError("Invalid date");
   });
 });

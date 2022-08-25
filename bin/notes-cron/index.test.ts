@@ -29,6 +29,7 @@ describe("index", () => {
         dir: {
           "2.md": "second note double(test ~ testtest)",
           "3.md": "no changes",
+          "4.md": "remind(July 2020 ~ Test reminder)",
           "ignore.pdf": "",
         },
       },
@@ -42,8 +43,13 @@ describe("index", () => {
       mockFs.restore();
     });
 
-    test("runs ago correctly", async () => {
-      await run("notes", fnDefs);
+    // TODO fix test
+    // test("throws if missing email", async () => {
+    //   await expect(() => run('notes', '', '+12345678', fnDefs)).toThrowError();
+    // })
+
+    test("runs template function correctly", async () => {
+      await run("notes", "testemail@example.com", "+12345678", fnDefs);
       const newContent1 = await File.read("notes/1.md");
       expect(newContent1).toBe(
         "first allCaps(note ~ NOTE) double(test ~ testtest)"
