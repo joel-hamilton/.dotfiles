@@ -28,9 +28,9 @@ sudo apt update
 chsh -s /bin/zsh
 
 [ -z $(command -v git) ] && sudo apt install -y git
+[ -z $(command -v vim) ] && sudo apt install -y vim
 [ -z $(command -v fzf) ] && sudo apt install -y fzf
 [ -z $(command -v jq) ] && sudo apt install -y jq
-[ -z $(command -v vim) ] && sudo apt install -y vim
 
 if [ -z $(command -v bat) ]; then
   sudo apt install -y bat
@@ -47,7 +47,7 @@ uname -m
 ## check node unofficial builds for a newer compatible node version: https://unofficial-builds.nodejs.org/
 wget https://unofficial-builds.nodejs.org/download/release/v14.10.0/node-v14.10.0-linux-armv6l.tar.gz
 tar -xzf node-v14.10.0-linux-armv6l.tar.gz
-cd node-v14.10.0-linux-armv6l.tar
+cd node-v14.10.0-linux-armv6l
 sudo cp -R * /usr/local/
 
 ## check and cleanup

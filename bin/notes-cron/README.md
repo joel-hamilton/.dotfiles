@@ -5,7 +5,7 @@ This script mutates text files based on template functions within the text. The 
 - age: `Seth is age(June 2021)` -> `Seth is age(June 2021 ~ six months old)`
 - ago: `They moved here ago(June 2021)` -> `They moved here ago(June 2021 ~ six months ago)`
 - for: `Has been working there for(June 2021)` -> `Has been working there for(June 2021 ~ Siz months)`
-- remind: `remind(June 2023, Message Felix to ask how the baby is doing)` -> `reminded(June 2023, Message Felix to ask how the baby is doing)`
+- remind: `remind(June 2023 ~ Message Felix to ask how the baby is doing)` -> `reminded(June 2023, Message Felix to ask how the baby is doing)`
   - this function sends reminder on the first run on/after the specified date
   - if the date has month-specificity, sends the reminder on a random day in that month to avoid bombarding user with reminders on the 1st
   - after reminder is sent, template string is changed to `reminded(...`
