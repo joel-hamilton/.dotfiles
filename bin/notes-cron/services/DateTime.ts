@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export interface IDateTimeClient {
-  (dateString: string): {
+  (dateString: string | Date): {
     isValid: () => boolean;
     fromNow: () => string;
   };
@@ -14,7 +14,9 @@ export class DateTime {
   }
 
   ago(dateString: string) {
-    const d = this.dateTimeClient(dateString);
+    // Convert to date to avoid moment.js deprecation warning, as it's ok we're using the Date 
+    // constructor; despite its deficiencies it works fine for the date strings we'll use in notes
+    const d = this.dateTimeClient(new Date(dateString));
     if (!d.isValid()) {
       throw new Error("Invalid date");
     }

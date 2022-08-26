@@ -13,7 +13,9 @@ describe("remind", () => {
   });
 
   test("if reminder time is past, it changes function name to 'reminded'", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (
+      dateString: string | Date
+    ) => ({
       isValid: () => true,
       fromNow: () => "two years ago",
       isPast: () => true,
@@ -25,7 +27,9 @@ describe("remind", () => {
   });
 
   test("if reminder time isnot past, it doesn't change function name", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (
+      dateString: string | Date
+    ) => ({
       isValid: () => true,
       fromNow: () => "in two years",
       isPast: () => false,

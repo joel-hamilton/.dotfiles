@@ -5,7 +5,7 @@ describe("DateTime", () => {
     let stubDateTimeClient: IDateTimeClient;
 
     beforeEach(() => {
-      stubDateTimeClient = jest.fn((dateString: string) => ({
+      stubDateTimeClient = jest.fn((dateString: string | Date) => ({
         isValid: () => false,
         fromNow: () => "",
       }));
@@ -40,7 +40,7 @@ describe("DateTime", () => {
     let stubDateTimeClient: IDateTimeClient;
 
     beforeEach(() => {
-      stubDateTimeClient = jest.fn((dateString: string) => ({
+      stubDateTimeClient = jest.fn((dateString: string | Date) => ({
         isValid: () => true,
         fromNow: () => "two years ago",
       }));

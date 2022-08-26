@@ -13,7 +13,7 @@ describe("duration", () => {
   });
 
   test("it returns the correct duration string with valid date", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (dateString: string | Date) => ({
       isValid: () => true,
       fromNow: () => "two years ago",
     });
@@ -23,7 +23,7 @@ describe("duration", () => {
   });
 
   test("it returns the correct duration string with invalidvalid date", () => {
-    const stubDateTimeClient: IDateTimeClient = (dateString: string) => ({
+    const stubDateTimeClient: IDateTimeClient = (dateString: string | Date) => ({
       isValid: () => false,
       fromNow: () => "two years ago",
     });

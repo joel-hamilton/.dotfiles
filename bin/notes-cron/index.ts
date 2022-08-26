@@ -12,6 +12,7 @@ import {
   remind,
 } from "./template-functions";
 import { SMSClient } from "./services/SMSClient";
+import { DailyDigest } from "./services/DailyDigest";
 
 export interface IMiddleware {
   (ctx: IContext): IContext;
@@ -23,7 +24,7 @@ export type TFnDef = [
   ...middlewares: IMiddleware[]
 ];
 
-const getDefaultFnDefs = (email: string, phoneNumber:string):TFnDef[] => [
+const getDefaultFnDefs = (email: string, phoneNumber: string): TFnDef[] => [
   ["age", age], // eg: age(July 2020 ~ two years old)
   ["ago", ago], // eg: ago(July 2020 ~ two years ago)
   ["duration", duration], // eg: duration(July 2020 ~ for two year)
@@ -33,7 +34,6 @@ const getDefaultFnDefs = (email: string, phoneNumber:string):TFnDef[] => [
     (ctx: IContext) => {
       if (ctx.fnName === "reminded") {
         SMSClient.send(phoneNumber, `Reminder: ${ctx.currentValue}`);
-        console.log(ctx);
       }
 
       return ctx;
@@ -47,6 +47,52 @@ export const run = async (
   phoneNumber: string,
   fnDefs: TFnDef[] = getDefaultFnDefs(email, phoneNumber)
 ) => {
+  const notesPathGlob = path.join(notesPath, "**/*.md");
+
+  const runTemplateFunctions = async () => {
+    const files = await File.list(notesPathGlob);
+
+    for (const fileName of files) {
+      const content = await File.read(fileName);
+      let newContent = content;
+
+      for (const [fnName, templateFunction, ...middlewares] of fnDefs) {
+        newContent = executeTemplateFunction(
+          newContent,
+          fnName,
+          templateFunction,
+          ...middlewares
+        );
+      }
+
+      // write the file, if content changed
+      if (newContent !== content) {
+        await File.write(fileName, newContent);
+      }
+    }
+  };
+
+  const runDailyDigest = async () => {
+    const dd = new DailyDigest(notesPathGlob, email);
+    return dd.run();
+  };
+
+  try {
+    await runTemplateFunctions();
+    await runDailyDigest();
+    console.log(`${new Date()}:" Finished running notes cron`);
+  } catch (e) {
+    console.error(`Encountered an error running cron tasks: '${e}'`);
+    throw e;
+  }
+};
+
+// run from command line
+if (require.main === module) {
+  const notesPath = process.env.NOTES_PATH;
+  const email = process.env.EMAIL_TO_ADDRESS;
+  const phoneNumber = process.env.PHONE_NUMBER;
+
   if (!notesPath) {
     throw new Error("No notes path");
   }
@@ -59,33 +105,5 @@ export const run = async (
     throw new Error("No phone number");
   }
 
-  const files = await File.list(path.join(notesPath, "**/*.md"));
-
-  for (const fileName of files) {
-    const content = await File.read(fileName);
-    let newContent = content;
-
-    for (const [fnName, templateFunction, ...middlewares] of fnDefs) {
-      newContent = executeTemplateFunction(
-        newContent,
-        fnName,
-        templateFunction,
-        ...middlewares
-      );
-    }
-
-    // write the file, if content changed
-    if (newContent !== content) {
-      console.log(`WRITING: ${newContent}`);
-      await File.write(fileName, newContent);
-    }
-  }
-};
-
-// run from command line
-if (require.main === module) {
-  const notesPath = process.argv[2];
-  const email = process.argv[3];
-  const phoneNumber = process.argv[4];
   run(notesPath, email, phoneNumber);
 }

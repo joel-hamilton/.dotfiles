@@ -13,12 +13,10 @@ export class SMSClient {
     }
 
     const client = twilio(accountSid, authToken);
-    client.messages
-      .create({
-        body,
-        to,
-        from: "+12369004341",
-      })
-      .then((message: any) => console.log(message.sid));
+    client.messages.create({
+      body,
+      to,
+      from: "+12369004341",
+    });
   }
 }

@@ -32,11 +32,16 @@ export class DailyDigest {
     const allPriorityContent = await this.getAllPriorityContent(fileList);
     const reducedPriorityContent =
       this.reducePriorityContent(allPriorityContent);
-    const sortedPriorityContent = reducedPriorityContent.sort((a, b) =>
-      a.length > b.length ? 1 : -1
-    );
-    const htmlContent = this.convertToHTML(sortedPriorityContent);
-    return EmailClient.send(this.email, 'Daily Digest', htmlContent);
+    const priorityContentExists = !!reducedPriorityContent.length;
+
+    if (priorityContentExists) {
+      const sortedPriorityContent = reducedPriorityContent.sort((a, b) =>
+        a.length > b.length ? 1 : -1
+      );
+
+      const htmlContent = this.convertToHTML(sortedPriorityContent);
+      return EmailClient.send(this.email, "Daily Digest", htmlContent);
+    }
   }
 
   async getAllPriorityContent(fileList: TFileList): Promise<IPriorityBuckets> {

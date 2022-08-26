@@ -3,8 +3,10 @@ import { run } from "../index";
 import path from "path";
 import moment from "moment";
 import { SMSClient } from "../services/SMSClient";
+import { EmailClient } from "../services/EmailClient";
 
 jest.mock("../services/SMSClient");
+jest.mock("../services/EmailClient");
 
 const fp = (filePath: string = "") =>
   path.join(__dirname, "test-notes", filePath);
@@ -16,6 +18,7 @@ describe("e2e tests", () => {
 
   beforeEach(async () => {
     (SMSClient as unknown as jest.Mock<SMSClient>).mockClear();
+    (EmailClient as unknown as jest.Mock<EmailClient>).mockClear();
 
     await fs.rm(fp(), { recursive: true, force: true });
     await fs.mkdir(fp("dir"), { recursive: true });
