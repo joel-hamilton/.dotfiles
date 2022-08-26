@@ -11,9 +11,7 @@ echo 'Running pi setup script'
 # Add Pi gateway public key
 if [ -s $(grep 'joel@raspberrypi' ~/.ssh/authorized_keys) ]; then
     echo 'Adding pi gateway public key to authorized keys'
-    <<EOF >> ~/.ssh/authorized_keys
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBm0UT+5BLug8ioXUBjIKXODWhofBVl9eqo9RTeak/pC6KxxE80X40415x4D6+p+FiKq64QvxTIpOwJJU/WXqdTBKo5yS/tKmXiZs8aIFoQccuRNM21Z+iKhH+Mlky3AcmrrBFglCCmPDiLAvgRtsh853XO8vQdFrZ5aKETZ3BJTMv7kPg4NG44p136Da6XKoLg8X/BPeOKHsysZgS3RW9YpKp0B3txGfvuOIYYjTJ8cWel3a6cfIlwkgRlD1IWT5rSmjLBPDerjT++XYgO/bDWHQJWJQph6DB2XyU3sFFvjhDS3zqfdCsrZAm5FOS/JMx2GeBwYeXPmTxz8eBUoKQuZOPcXi2uzv9D6Fhe+4i0zL1yAtazeRFeBNLp42O5XQOv4WFXCBemNLV1u8hrehbdMSjanWGmTyoy4Jhdq7IFmg73wiTd3AhyaW26vWNP0/FjoBUZF1TlMqSSdC/XSgwhTjP0wKtIthY32RpcKAJIXbq+PpnuG5u1VZANcamHWs= joel@raspberrypi
-EOF
+    echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBm0UT+5BLug8ioXUBjIKXODWhofBVl9eqo9RTeak/pC6KxxE80X40415x4D6+p+FiKq64QvxTIpOwJJU/WXqdTBKo5yS/tKmXiZs8aIFoQccuRNM21Z+iKhH+Mlky3AcmrrBFglCCmPDiLAvgRtsh853XO8vQdFrZ5aKETZ3BJTMv7kPg4NG44p136Da6XKoLg8X/BPeOKHsysZgS3RW9YpKp0B3txGfvuOIYYjTJ8cWel3a6cfIlwkgRlD1IWT5rSmjLBPDerjT++XYgO/bDWHQJWJQph6DB2XyU3sFFvjhDS3zqfdCsrZAm5FOS/JMx2GeBwYeXPmTxz8eBUoKQuZOPcXi2uzv9D6Fhe+4i0zL1yAtazeRFeBNLp42O5XQOv4WFXCBemNLV1u8hrehbdMSjanWGmTyoy4Jhdq7IFmg73wiTd3AhyaW26vWNP0/FjoBUZF1TlMqSSdC/XSgwhTjP0wKtIthY32RpcKAJIXbq+PpnuG5u1VZANcamHWs= joel@raspberrypi' >> ~/.ssh/authorized_keys
 fi
 
 # Add some apt pacakges
