@@ -16,7 +16,11 @@ Daily Digest sends a curated daily email containing a randomized assortment of p
 - Required env variables are in `.env.example`
 - Also `$NOTES_PATH`, `$EMAIL`, `$PHONE_NUMBER`.
   - These should be set before running `run.sh`
-- Run by setting a crontab like this: `00 06 * * * /bin/zsh ts-node ~/.dotfiles/bin/notes-cron/index.ts >> ~/.crontab.log 2>&1`
+- Run by setting a crontab like this: ```
+MAILTO=""
+PATH="~/.nvm/versions/node/v14.19.0/bin:... all the other paths"
+00 06 * * * cd ~/.dotfiles/bin/notes-cron && ~/.nvm/versions/node/v14.19.0/bin/ts-node index.ts >> ~/.crontab.log 2>&1
+```
   - Check system time first by running `date` - it may be on UTC
 
 ## TODO
