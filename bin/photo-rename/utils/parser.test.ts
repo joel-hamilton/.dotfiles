@@ -1,5 +1,5 @@
 import { ExifTool } from "exiftool-vendored";
-import { getDateFromExif, getDateFromName } from "./parser";
+import { getDateFromExif, getDateFromFileName } from "./parser";
 
 describe("parser", () => {
   describe("getDateFromExif", () => {
@@ -23,13 +23,13 @@ describe("parser", () => {
     });
   });
 
-  describe("getDateFromName", () => {
+  describe("getDateFromfileName", () => {
     test("returns same name if already formatted correctly", () => {
-      expect(getDateFromName("IMG_20200101_010101_sm")).toBe("20200101_010101");
+      expect(getDateFromFileName("IMG_20200101_010101_sm")).toBe("20200101_010101");
     });
 
     test("formats string with milliseconds correctly", () => {
-      expect(getDateFromName("IMG_20200101_010101999_sm")).toBe(
+      expect(getDateFromFileName("IMG_20200101_010101999_sm")).toBe(
         "20200101_010101"
       );
     });

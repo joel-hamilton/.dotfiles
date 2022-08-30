@@ -14,10 +14,8 @@ export const getDateFromExif = async (filePath: string, extool = exiftool) => {
   }
 };
 
-export const getDateFromName = (filePath: string) => {
-  const fileExtension = path.extname(filePath);
-  const filename = path.basename(filePath, fileExtension);
-  const sanitizedFilename = filename
+export const getDateFromFileName = (fileName: string) => {
+  const sanitizedFilename = fileName
     .replace(/[^\d_]/g, "")
     .replace(/^_*/g, "")
     .replace(/_*$/g, "");

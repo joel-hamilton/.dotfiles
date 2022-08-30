@@ -1,37 +1,40 @@
 const promisify = require("util").promisify;
-const glob = promisify(require("glob"));
 const fs = require("fs");
 const path = require("path");
 const rename = promisify(fs.rename);
-const readline = require("readline");
 
-import { getDateFromExif, getDateFromName } from "./utils";
+import {
+  getDateFromExif,
+  getDateFromFileName,
+  getImageFilePaths,
+  promptBoolean,
+} from "./utils";
 
-const run = async (dirPath: string) => {
-  const files = await getImages(dirPath);
-  if (!(await promptRename(`Rename ${files.length} images?`))) {
-    return;
+const run = async () => {
+  const dirPath = path.resolve(process.argv[2]);
+  const dryRun = process.argv[3] === "--dry-run";
+  const files = await getImageFilePaths(dirPath);
+  if (
+    await promptBoolean(
+      `${dryRun ? "DRY RUN: " : ""}Rename ${files.length} images? [y/N]`
+    )
+  ) {
+    for (const filePath of files) {
+      const dirPath = path.dirname(filePath);
+      const extension = path.extname(filePath);
+      const fileName = path.basename(filePath, extension);
+      const newFileName =
+        await getDateFromExif(filePath) || await getDateFromFileName(fileName) || fileName;
+      const newFilePath = path.join(dirPath, `${newFileName}${extension}`);
+      if (newFilePath !== filePath) {
+        console.log(`Renamed: ${filePath}\n\t-> ${newFilePath}`);
+
+        if (!dryRun) {
+          await rename(filePath, newFilePath);
+        }
+      }
+    }
   }
-
-  
 };
 
-const getImages = async (dirPath: string): Promise<string[]> => {
-  return glob(`${dirPath}/**/*.(CR2|jpg|jpeg)`);
-};
-
-const promptRename = (query: string): Promise<boolean> => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) =>
-    rl.question(query, (ans: string) => {
-      rl.close();
-      resolve(ans.toLowerCase() === "y");
-    })
-  );
-};
-
-// run('../../../Desktop');
+run();
