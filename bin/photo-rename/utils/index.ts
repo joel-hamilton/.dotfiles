@@ -1,3 +1,3 @@
-export * from './parser'
-export * from './getImageFilePaths'
+export * from './fileUtils'
+export * from './getDateFromExif'
 export * from './prompt';
